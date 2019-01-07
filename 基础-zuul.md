@@ -77,6 +77,63 @@ zuul.routes.city.url=http://localhost:8081/getDesc2 #网关uri映射url
 
 
 
-网关
 
-http://www.ityouknow.com/springcloud/2017/06/01/gateway-service-zuul.html
+
+### 3.快速启动-服务化
+
+##### 概述:
+
+API-Gateway结合Eureka使用,避免了通过url映射的局限性,动态的调用指定提供者的服务
+
+
+
+##### 3-1.引入eureka的jar包
+
+```xml
+<dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+```
+
+
+
+##### 3-2.properties配置
+
+```properties
+spring.application.name=gateway-zull
+server.port=8000
+zuul.routes.city.path=/d/**
+zuul.routes.city.service-id=cityProvider
+eureka.client.service-url.defaultZone=http://localhost:8080/eureka/
+```
+
+
+
+此处service-id是Eureka中的服务名
+
+
+
+### 4.快速启动-自动转发机制
+
+zuul以客户端的身份注册到eureka后,默认配置该注册中心下的所有服务
+
+
+
+##### 配置
+
+```
+#zuul.routes.city.path=/d/**
+#zuul.routes.city.service-id=cityProvider
+```
+
+注释掉硬编码地址部分
+
+
+
+##### 访问方式
+
+```
+http://网关IP:网关PORT:Eureka服务名/**
+```
+
